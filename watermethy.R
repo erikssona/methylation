@@ -1,3 +1,6 @@
+## watermethy.R uses wateRmelon package to import data into a MethyLumiSet object
+## Also creates a MethyLumiM object using the lumi package
+
 ## Original Files
 MethyFileName<-"~/Desktop/methydata/MethyFileName.txt"
 PhenoFileName<-"~/Desktop/methydata/PhenoFileName.txt"
