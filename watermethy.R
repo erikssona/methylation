@@ -2,11 +2,11 @@
 ## Also creates a MethyLumiM object using the lumi package
 
 ## Original Files
-MethyFileName<-"~/Desktop/methydata/MethyFileName.txt"
-PhenoFileName<-"~/Desktop/methydata/PhenoFileName.txt"
+MethyFileName<-"~/methydata/MethyFileName.txt"
+PhenoFileName<-"~/methydata/PhenoFileName.txt"
 ## Edited Files
-MethyFile<-"~/Desktop/methydata/MethyFile.txt"
-PhenoFile<-"~/Desktop/methydata/PhenoFile.txt"
+MethyFile<-"~/methydata/MethyFile.txt"
+PhenoFile<-"~/methydata/PhenoFile.txt"
 
 # Read in the files
 methyframe<-read.delim(MethyFileName, header=TRUE)
