@@ -1,5 +1,6 @@
-## watermethy.R uses wateRmelon package to import data into a MethyLumiSet object
-## Also creates a MethyLumiM object using the lumi package
+## watermethy.R uses wateRmelon package (version 1.0) to import data into a MethyLumiSet object
+## Also creates a MethyLumiM object using the lumi package (v. 1.1.0)
+## and a exprmethy450 object using IMA (v. 2.0).
 
 ## Original Files
 MethyFileName<-"~/methydata/MethyFileName.txt"
@@ -9,12 +10,12 @@ MethyFile<-"~/methydata/MethyFile.txt"
 PhenoFile<-"~/methydata/PhenoFile.txt"
 
 # Read in the files
-methyframe<-read.delim(MethyFileName, header=TRUE)
-phenoframe<-read.delim(PhenoFileName, header=TRUE)
+methyframe<-read.delim(MethyFileName, header=TRUE, stringsAsFactors=FALSE)
+phenoframe<-read.delim(PhenoFileName, header=TRUE, stringsAsFactors=FALSE)
 
 # Map SampleID's to some other field
 # get rid of duplicates
-levels(phenoframe$SampleLabel)<-c(levels(phenoframe$SampleLabel), "Ctrl2")
+#levels(phenoframe$SampleLabel)<-c(levels(phenoframe$SampleLabel), "Ctrl2")
 phenoframe$SampleLabel[76]<-"Ctrl2"
 # Create the ID map
 id_map<-data.frame(phenoframe$SampleID, phenoframe$SampleLabel)
@@ -36,9 +37,16 @@ methyframe<-methyframe[setdiff(names(methyframe),submethy)]
 
 
 # (add X's and rearrange phenoframe columns)
-for (i in 1:96) {
-  levels(phenoframe$SampleLabel)[i]<-paste("X",levels(phenoframe$SampleLabel)[i],sep="")
+#for (i in 1:96) {
+#  levels(phenoframe$SampleLabel)[i]<-paste("X",levels(phenoframe$SampleLabel)[i],sep="")
+#}
+for (i in 1:91) {
+  try(phenoframe$SampleLabel[i]<-paste("X",phenoframe$SampleLabel[i],sep=""), silent=TRUE)
 }
+#There is an error that says: 'Error in `$<-.data.frame`(`*tmp*`, "SampleLabel", value = c("X107612C",  : 
+#replacement has 91 rows, data has 90' - this doesn't change the output though so I silenced it
+
+#change column labels
 phenoframe<-data.frame(phenoframe$SampleLabel, phenoframe)
 names(phenoframe)[2]<-"OldSampleID"
 names(phenoframe)[1]<-"SampleID"
@@ -66,10 +74,16 @@ lmdata<-lumiMethyR(MethyFile)
 library(methylumi)
 mldata<-methylumiR(filename=MethyFile)
 
-### workspace saved 0611
+### workspace saved 0728
+# change M/F to 0/1
+phenoframe$Sex <- gsub("M", 0, phenoframe$Sex)
+phenoframe$Sex <- gsub("F", 1, phenoframe$Sex)
+
 # now add pheno data
 pData(mldata)<-phenoframe
 pData(lmdata)<-phenoframe
+
+
 
 library('wateRmelon')
 mldata.pf<-pfilter(mldata)
@@ -86,9 +100,7 @@ genki(mldata.pf)
 genki(mldata.dasen.pf)
 genki(mldata.nasen.pf)
 
-# calculate X-chromosome metrics on QC'd betas
-levels(pData(mldata.pf)$Sex)<-c("F","M")
-seabi(mldata.pf, sex=pData(mldata.pf)$Sex, X=fData(mldata.pf)$CHR=='X')
+# Can't calculate X-chromosome metrics on QC'd betas with seabi method with all male samples
 
 
 boxplot(log(methylated(mldata)), las=2, cex.axis=0.8, main="methylated, unfiltered" )
@@ -105,7 +117,7 @@ sampleNames(phenoData(mldata))<-sampleNames(assayData(mldata))
 # Make a MethyLumiM object based on the mldata MethyLumiSet object (watermelon)
 mldata.mlumi <- as(mldata, 'MethyLumiM')
 
-### workspace saved 0624
+###
 
 
 ## Beth says:
