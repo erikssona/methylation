@@ -3,7 +3,13 @@ biocLite("FDb.InfiniumMethylation.hg19")
 
 #fix sampleName problem
 sampleNames(lmdata)<-t(phenoframe[1])
+sampleNames(phenoData(mldata))<-sampleNames(assayData(mldata))
+
+# Make a MethyGenoSet object from the MethyLumiM object (lumi)
 lmdata.analysis<-MethyLumiM2GenoSet(lmdata)
+
+# Make a MethyLumiM object based on the mldata MethyLumiSet object (watermelon)
+mldata.mlumi <- as(mldata, 'MethyLumiM')
 mldata.mlumi.analysis<-MethyLumiM2GenoSet(mldata.mlumi)
 # At this point lmdata.analysis and mldata.mlumi.analysis can be directly compared,
 # with lmdata originating from lumi and mldata from watermelon.

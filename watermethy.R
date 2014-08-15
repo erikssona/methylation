@@ -74,7 +74,7 @@ lmdata<-lumiMethyR(MethyFile)
 library(methylumi)
 mldata<-methylumiR(filename=MethyFile)
 
-### workspace saved 0728
+### workspace saved 0808
 # change M/F to 0/1
 phenoframe$Sex <- gsub("M", 0, phenoframe$Sex)
 phenoframe$Sex <- gsub("F", 1, phenoframe$Sex)
@@ -112,10 +112,7 @@ boxplot(log(unmethylated(mldata.pf)), las=2, cex.axis=0.8, main="unmethylated, f
 boxplot(log(unmethylated(mldata.dasen.pf)), las=2, cex.axis=0.8, main="unmethylated, dasen" )
 boxplot(log(unmethylated(mldata.nasen.pf)), las=2, cex.axis=0.8, main="unmethylated, nasen" )
 
-# fix name problem
-sampleNames(phenoData(mldata))<-sampleNames(assayData(mldata))
-# Make a MethyLumiM object based on the mldata MethyLumiSet object (watermelon)
-mldata.mlumi <- as(mldata, 'MethyLumiM')
+
 
 ###
 
