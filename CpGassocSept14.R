@@ -6,7 +6,7 @@
 ## various covariates.
 ## One covariate is the principal component of PCA on the betas.
 ############################
-load("~/MethySets.RData")
+load("~/JustMethyNorm.RData")
 
 library(methylumi) # needed for getting betas from methyLumiSet objects
 library(pcaMethods) # Data cleaning/preprocessing before conducting PCA on the methylation dataset
